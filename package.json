@@ -1,5 +1,5 @@
 {
-  "name": "userclouds",
+  "name": "@userclouds/sdk-typescript",
   "version": "1.0.0",
   "description": "Typescript SDK for UserClouds",
   "main": "index.js",
@@ -18,5 +18,6 @@
   "homepage": "https://github.com/userclouds/sdk-typescript#readme",
   "dependencies": {
     "uuid": "^9.0.0"
-  }
+  },
+  "devDependencies": {}
 }
