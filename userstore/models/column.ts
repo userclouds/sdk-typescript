@@ -1,0 +1,11 @@
+/* eslint-disable camelcase */
+type Column = {
+  id: string;
+  name: string;
+  type: string;
+  is_array: boolean;
+  default_value: string;
+  index_type: string;
+};
+
+export default Column;
