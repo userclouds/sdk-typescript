@@ -4,7 +4,7 @@ import {
   Column,
   Mutator,
   Purpose,
-  TransformationPolicy,
+  Transformer,
   User,
 } from './models';
 import { defaultLimit, paginationStart } from '../uc/pagination';
@@ -226,8 +226,15 @@ class Client extends BaseClient {
     return this.makeRequest<Purpose>(`/userstore/config/purposes/${purposeId}`);
   }
 
-  async listPurposes(): Promise<Purpose[]> {
-    return this.makeRequest<Purpose[]>(`/userstore/config/purposes`);
+  async listPurposes(
+    startingAfter: string = paginationStart,
+    limit = defaultLimit
+  ): Promise<[Purpose[], boolean]> {
+    return this.makePaginatedRequest<Purpose>(
+      `/userstore/config/purposes`,
+      startingAfter,
+      limit
+    );
   }
 
   async updatePurpose(purpose: Purpose): Promise<Purpose> {
@@ -246,21 +253,21 @@ class Client extends BaseClient {
     );
   }
 
-  // Transformation policy functions
-  async createTransformationPolicy(
-    transformation_policy: TransformationPolicy,
+  // Transformer functions
+  async createTransformer(
+    transformer: Transformer,
     ifNotExists = false
-  ): Promise<TransformationPolicy> {
-    return this.makeRequest<TransformationPolicy>(
+  ): Promise<Transformer> {
+    return this.makeRequest<Transformer>(
       `/tokenizer/policies/transformation`,
       'POST',
       undefined,
-      JSON.stringify({ transformation_policy })
+      JSON.stringify({ transformer })
     ).catch((error) => {
       if (error instanceof APIError && error.code === 409 && ifNotExists) {
         const apiErrorResponse = APIErrorResponse.fromJSON(error.body);
         if (apiErrorResponse.identical) {
-          const ret = Object.assign(transformation_policy, {
+          const ret = Object.assign(transformer, {
             id: apiErrorResponse.id,
           });
           return ret;
@@ -270,36 +277,30 @@ class Client extends BaseClient {
     });
   }
 
-  async getTransformationPolicy(
-    transformationPolicyId: string
-  ): Promise<TransformationPolicy> {
-    return this.makeRequest<TransformationPolicy>(
-      `/tokenizer/policies/transformation/${transformationPolicyId}`
+  async getTransformer(transformerId: string): Promise<Transformer> {
+    return this.makeRequest<Transformer>(
+      `/tokenizer/policies/transformation/${transformerId}`
     );
   }
 
-  async listTransformationPolicies(): Promise<TransformationPolicy[]> {
-    return this.makeRequest<TransformationPolicy[]>(
+  async listTransformers(): Promise<Transformer[]> {
+    return this.makeRequest<Transformer[]>(
       `/tokenizer/policies/transformation`
     );
   }
 
-  async updateTransformationPolicy(
-    transformation_policy: TransformationPolicy
-  ): Promise<TransformationPolicy> {
-    return this.makeRequest<TransformationPolicy>(
-      `/tokenizer/policies/transformation/${transformation_policy.id}`,
+  async updateTransformer(transformer: Transformer): Promise<Transformer> {
+    return this.makeRequest<Transformer>(
+      `/tokenizer/policies/transformation/${transformer.id}`,
       'PUT',
       undefined,
-      JSON.stringify({ transformation_policy })
+      JSON.stringify({ transformer })
     );
   }
 
-  async deleteTransformationPolicy(
-    transformationPolicyId: string
-  ): Promise<void> {
+  async deleteTransformer(transformerId: string): Promise<void> {
     return this.makeRequest<void>(
-      `/tokenizer/policies/transformation/${transformationPolicyId}`,
+      `/tokenizer/policies/transformation/${transformerId}`,
       'DELETE'
     );
   }

@@ -1,14 +1,22 @@
 import UserSelectorConfig from './user_selector';
+import ResourceID from './resource_id';
+
 /* eslint-disable camelcase */
+
+type ColumnInputConfig = {
+  column: ResourceID;
+  validator: ResourceID;
+};
+
 type Mutator = {
   id: string;
   name: string;
   description: string;
-  column_names: string[];
-  access_policy_id: string;
-  validation_policy_id: string;
+  columns: ColumnInputConfig[];
+  access_policy: ResourceID;
   selector_config: UserSelectorConfig;
   version: number;
 };
 
 export default Mutator;
+export type { ColumnInputConfig };
