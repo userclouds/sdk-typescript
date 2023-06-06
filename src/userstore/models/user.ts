@@ -1,6 +1,6 @@
 type User = {
   id: string;
-  profile: Record<string, any>;
+  profile: Record<string, string | object>;
 };
 
 export default User;

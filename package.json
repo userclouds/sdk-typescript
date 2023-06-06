@@ -1,10 +1,12 @@
 {
   "name": "@userclouds/sdk-typescript",
-  "version": "1.0.1",
+  "version": "1.0.12",
   "description": "Typescript SDK for UserClouds",
-  "main": "index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -19,5 +21,8 @@
   "dependencies": {
     "uuid": "^9.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "files": [
+    "lib/**/*"
+  ]
 }

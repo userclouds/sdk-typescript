@@ -10,6 +10,8 @@ import {
 import { defaultLimit, paginationStart } from '../uc/pagination';
 import BaseClient, { APIError, APIErrorResponse } from '../uc/baseclient';
 
+/* eslint-disable camelcase */
+
 class Client extends BaseClient {
   // Access Policy functions
   async createAccessPolicy(
@@ -162,7 +164,7 @@ class Client extends BaseClient {
       `/userstore/config/mutators`,
       'POST',
       undefined,
-      JSON.stringify({ mutator: mutator })
+      JSON.stringify({ mutator })
     ).catch((error) => {
       if (error instanceof APIError && error.code === 409 && ifNotExists) {
         const apiErrorResponse = APIErrorResponse.fromJSON(error.body);
@@ -190,7 +192,7 @@ class Client extends BaseClient {
       `/userstore/config/mutators/${mutator.id}`,
       'PUT',
       undefined,
-      JSON.stringify({ mutator: mutator })
+      JSON.stringify({ mutator })
     );
   }
 
@@ -232,6 +234,7 @@ class Client extends BaseClient {
   ): Promise<[Purpose[], boolean]> {
     return this.makePaginatedRequest<Purpose>(
       `/userstore/config/purposes`,
+      {},
       startingAfter,
       limit
     );
@@ -306,8 +309,17 @@ class Client extends BaseClient {
   }
 
   // User functions
-  async createUser(): Promise<string> {
-    return this.makeRequest<string>(`/authn/users`, 'POST');
+  async createUser(
+    profile: object = {},
+    organization_id = ''
+  ): Promise<string> {
+    const body = organization_id ? { profile, organization_id } : { profile };
+    return this.makeRequest<string>(
+      `/authn/users`,
+      'POST',
+      undefined,
+      JSON.stringify(body)
+    );
   }
 
   async createUserWithPassword(
@@ -324,11 +336,16 @@ class Client extends BaseClient {
 
   // Admin-only -- should use accessors and mutators instead
   async listUsers(
+    organizationID = '',
     startingAfter: string = paginationStart,
     limit = defaultLimit
   ): Promise<[User[], boolean]> {
+    const params: { [key: string]: string } = organizationID
+      ? { organization_id: organizationID }
+      : {};
     return this.makePaginatedRequest<User>(
       '/authn/users',
+      params,
       startingAfter,
       limit
     );
