@@ -2,6 +2,7 @@
 
 class ResourceID {
   id: string;
+
   name: string;
 
   constructor(id: string, name: string) {
@@ -9,11 +10,11 @@ class ResourceID {
     this.name = name;
   }
 
-  static fromJSON(json: any): ResourceID {
+  static fromJSON(json: { [key: string]: string }): ResourceID {
     return new ResourceID(json.id, json.name);
   }
 
-  toJSON(): any {
+  toJSON() {
     if (this.id && this.name) {
       return {
         id: this.id,

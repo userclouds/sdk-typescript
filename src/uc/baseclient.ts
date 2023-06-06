@@ -1,3 +1,6 @@
+/* eslint-disable camelcase */
+/* eslint max-classes-per-file: ["error", 5] */
+
 class APIError extends Error {
   code: number;
 
@@ -21,7 +24,9 @@ class APIError extends Error {
 
 class APIErrorResponse {
   error: string;
+
   id: string;
+
   identical: boolean;
 
   constructor(error: string, id: string, identical: boolean) {
@@ -96,19 +101,17 @@ class BaseClient {
 
   protected makePaginatedRequest<T>(
     url: string,
+    parameters: { [key: string]: string },
     startingAfter: string,
     limit: number
   ): Promise<[T[], boolean]> {
+    const params = { ...parameters };
+    params.starting_after = startingAfter;
+    params.limit = limit.toString();
     return new Promise((resolve, reject) => {
-      fetch(
-        this.makeURL(url, {
-          starting_after: startingAfter,
-          limit: limit.toString(),
-        }),
-        {
-          headers: { Authorization: `Bearer ${this.authHeader}` },
-        }
-      )
+      fetch(this.makeURL(url, params), {
+        headers: { Authorization: `Bearer ${this.authHeader}` },
+      })
         .then(async (response) => {
           if (!response.ok) {
             const responseText = await response.text();

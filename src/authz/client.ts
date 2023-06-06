@@ -2,15 +2,26 @@ import { defaultLimit, paginationStart } from '../uc/pagination';
 import UCObject, { UCObjectType } from './models/ucobject';
 import Edge, { Attribute, EdgeType } from './models/edge';
 import BaseClient from '../uc/baseclient';
+import Organization from './models/organization';
 
 class Client extends BaseClient {
   // objects
   async listObjects(
+    typeId = '',
+    organizationID = '',
     startingAfter: string = paginationStart,
     limit = 100
   ): Promise<[UCObject[], boolean]> {
+    const params: { [key: string]: string } = {};
+    if (typeId !== '') {
+      params.type_id = typeId;
+    }
+    if (organizationID !== '') {
+      params.organization_id = organizationID;
+    }
     return this.makePaginatedRequest<UCObject>(
       '/authz/objects',
+      params,
       startingAfter,
       limit
     );
@@ -19,17 +30,22 @@ class Client extends BaseClient {
   async createObject(
     id: string,
     typeId: string,
-    alias = ''
+    alias = '',
+    organizationID = ''
   ): Promise<UCObject> {
+    const obj: { [key: string]: string } = {
+      id,
+      type_id: typeId,
+      alias,
+    };
+    if (organizationID) {
+      obj.organization_id = organizationID;
+    }
     return this.makeRequest(
       '/authz/objects',
       'POST',
       undefined,
-      JSON.stringify({
-        id,
-        type_id: typeId,
-        alias,
-      })
+      JSON.stringify(obj)
     );
   }
 
@@ -48,6 +64,7 @@ class Client extends BaseClient {
   ): Promise<[Edge[], boolean]> {
     return this.makePaginatedRequest<Edge>(
       '/authz/edges',
+      {},
       startingAfter,
       limit
     );
@@ -60,6 +77,7 @@ class Client extends BaseClient {
   ): Promise<[Edge[], boolean]> {
     return this.makePaginatedRequest<Edge>(
       `/authz/objects/${objectID}/edges`,
+      {},
       startingAfter,
       limit
     );
@@ -99,6 +117,7 @@ class Client extends BaseClient {
   ): Promise<[UCObjectType[], boolean]> {
     return this.makePaginatedRequest<UCObjectType>(
       '/authz/objecttypes',
+      {},
       startingAfter,
       limit
     );
@@ -126,11 +145,17 @@ class Client extends BaseClient {
 
   // edge types
   async listEdgeTypes(
+    organizationID = '',
     startingAfter: string = paginationStart,
     limit: number = defaultLimit
   ): Promise<[EdgeType[], boolean]> {
+    const params: { [key: string]: string } = {};
+    if (organizationID !== '') {
+      params.organization_id = organizationID;
+    }
     return this.makePaginatedRequest<EdgeType>(
       '/authz/edgetypes',
+      params,
       startingAfter,
       limit
     );
@@ -141,19 +166,24 @@ class Client extends BaseClient {
     typeName: string,
     sourceObjectTypeId: string,
     targetObjectTypeId: string,
-    attributes: Attribute[]
+    attributes: Attribute[],
+    organizationID = ''
   ): Promise<EdgeType> {
+    const params: { [key: string]: string | object } = {
+      id,
+      type_name: typeName,
+      source_object_type_id: sourceObjectTypeId,
+      target_object_type_id: targetObjectTypeId,
+      attributes,
+    };
+    if (organizationID) {
+      params.organization_id = organizationID;
+    }
     return this.makeRequest(
       '/authz/edgetypes',
       'POST',
       undefined,
-      JSON.stringify({
-        id,
-        type_name: typeName,
-        source_object_type_id: sourceObjectTypeId,
-        target_object_type_id: targetObjectTypeId,
-        attributes,
-      })
+      JSON.stringify(params)
     );
   }
 
@@ -163,6 +193,59 @@ class Client extends BaseClient {
 
   async deleteEdgeType(typeId: string): Promise<void> {
     return this.makeRequest<void>(`/authz/edgetypes/${typeId}`, 'DELETE');
+  }
+
+  async getOrganization(orgID: string): Promise<Organization> {
+    return this.makeRequest<Organization>(
+      `/authz/organizations/${orgID}`,
+      'GET'
+    );
+  }
+
+  async createOrganization(
+    id: string,
+    name: string,
+    region = 'aws-us-west-2'
+  ): Promise<Organization> {
+    return this.makeRequest(
+      '/authz/organizations',
+      'POST',
+      undefined,
+      JSON.stringify({
+        id,
+        name,
+        region,
+      })
+    );
+  }
+
+  async listOrganizations(
+    startingAfter: string = paginationStart,
+    limit: number = defaultLimit
+  ): Promise<[Organization[], boolean]> {
+    return this.makePaginatedRequest<Organization>(
+      '/authz/organizations',
+      {},
+      startingAfter,
+      limit
+    );
+  }
+
+  async checkAttribute(
+    sourceObjectID: string,
+    targetObjectID: string,
+    attributeName: string
+  ): Promise<boolean> {
+    return this.makeRequest(
+      '/authz/checkAttribute',
+      'GET',
+      undefined,
+      JSON.stringify({
+        source_object_id: sourceObjectID,
+        target_object_id: targetObjectID,
+        attribute: attributeName,
+      })
+    );
   }
 }
 
