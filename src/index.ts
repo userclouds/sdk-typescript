@@ -11,6 +11,8 @@ import {
 } from './authz/models';
 import {
   AccessPolicy,
+  AccessPolicyComponent,
+  AccessPolicyTemplate,
   Accessor,
   Column,
   ColumnInputConfig,
@@ -33,7 +35,8 @@ import {
   COLUMN_INDEX_TYPE_INDEXED,
   COLUMN_INDEX_TYPE_UNIQUE,
   AUTHN_TYPE_PASSWORD,
-  POLICY_TYPE_FUNCTION,
+  POLICY_TYPE_COMPOSITE_INTERSECTION,
+  POLICY_TYPE_COMPOSITE_UNION,
   TRANSFORM_TYPE_PASSTHROUGH,
   TRANSFORM_TYPE_TOKENIZE_BY_REFERENCE,
   TRANSFORM_TYPE_TOKENIZE_BY_VALUE,
@@ -62,6 +65,7 @@ const getClientCredentialsToken = async (
 };
 
 export {
+  AccessPolicyComponent,
   AuthZClient,
   UserstoreClient,
   PlexClient,
@@ -77,7 +81,8 @@ export {
   COLUMN_INDEX_TYPE_INDEXED,
   COLUMN_INDEX_TYPE_UNIQUE,
   AUTHN_TYPE_PASSWORD,
-  POLICY_TYPE_FUNCTION,
+  POLICY_TYPE_COMPOSITE_INTERSECTION,
+  POLICY_TYPE_COMPOSITE_UNION,
   TRANSFORM_TYPE_PASSTHROUGH,
   TRANSFORM_TYPE_TOKENIZE_BY_REFERENCE,
   TRANSFORM_TYPE_TOKENIZE_BY_VALUE,
@@ -91,6 +96,7 @@ export type {
   EdgeType,
   Organization,
   AccessPolicy,
+  AccessPolicyTemplate,
   Accessor,
   Column,
   ColumnInputConfig,

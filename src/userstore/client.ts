@@ -1,5 +1,6 @@
 import {
   AccessPolicy,
+  AccessPolicyTemplate,
   Accessor,
   Column,
   Mutator,
@@ -43,8 +44,16 @@ class Client extends BaseClient {
     );
   }
 
-  async listAccessPolicies(): Promise<AccessPolicy[]> {
-    return this.makeRequest<AccessPolicy[]>('/tokenizer/policies/access');
+  async listAccessPolicies(
+    startingAfter: string = paginationStart,
+    limit = 100
+  ): Promise<[AccessPolicy[], boolean]> {
+    return this.makePaginatedRequest<AccessPolicy>(
+      '/tokenizer/policies/access',
+      {},
+      startingAfter,
+      limit
+    );
   }
 
   async updateAccessPolicy(access_policy: AccessPolicy): Promise<AccessPolicy> {
@@ -59,6 +68,70 @@ class Client extends BaseClient {
   async deleteAccessPolicy(accessPolicyId: string): Promise<void> {
     return this.makeRequest<void>(
       `/tokenizer/policies/access/${accessPolicyId}`,
+      'DELETE'
+    );
+  }
+
+  // Access Policy Template functions
+  async createAccessPolicyTemplate(
+    access_policy_template: AccessPolicyTemplate,
+    ifNotExists = false
+  ): Promise<AccessPolicyTemplate> {
+    return this.makeRequest<AccessPolicyTemplate>(
+      '/tokenizer/policies/accesstemplate',
+      'POST',
+      undefined,
+      JSON.stringify({ access_policy_template })
+    ).catch((error) => {
+      if (error instanceof APIError && error.code === 409 && ifNotExists) {
+        const apiErrorResponse = APIErrorResponse.fromJSON(error.body);
+        if (apiErrorResponse.identical) {
+          const ret = Object.assign(access_policy_template, {
+            id: apiErrorResponse.id,
+          });
+          return ret;
+        }
+      }
+      throw error;
+    });
+  }
+
+  async getAccessPolicyTemplate(
+    accessPolicyTemplateId: string
+  ): Promise<AccessPolicyTemplate> {
+    return this.makeRequest<AccessPolicyTemplate>(
+      `/tokenizer/policies/access/${accessPolicyTemplateId}`
+    );
+  }
+
+  async listAccessPolicyTemplates(
+    startingAfter: string = paginationStart,
+    limit = 100
+  ): Promise<[AccessPolicyTemplate[], boolean]> {
+    return this.makePaginatedRequest<AccessPolicyTemplate>(
+      '/tokenizer/policies/accesstemplate',
+      {},
+      startingAfter,
+      limit
+    );
+  }
+
+  async updateAccessPolicyTemplate(
+    access_policy_template: AccessPolicyTemplate
+  ): Promise<AccessPolicyTemplate> {
+    return this.makeRequest<AccessPolicyTemplate>(
+      `/tokenizer/policies/accesstemplate/${access_policy_template.id}`,
+      'PUT',
+      undefined,
+      JSON.stringify({ access_policy_template })
+    );
+  }
+
+  async deleteAccessPolicyTemplate(
+    accessPolicyTemplateId: string
+  ): Promise<void> {
+    return this.makeRequest<void>(
+      `/tokenizer/policies/accesstemplate/${accessPolicyTemplateId}`,
       'DELETE'
     );
   }
@@ -94,7 +167,14 @@ class Client extends BaseClient {
   }
 
   async listAccessors(): Promise<Accessor[]> {
-    return this.makeRequest<Accessor[]>(`/userstore/config/accessors`);
+    return this.makeRequest<Accessor[]>(`/userstore/config/accessors`).then(
+      (json) => {
+        if ('data' in json) {
+          return json.data as Accessor[];
+        }
+        return [];
+      }
+    );
   }
 
   async updateAccessor(accessor: Accessor): Promise<Accessor> {
@@ -138,8 +218,16 @@ class Client extends BaseClient {
     return this.makeRequest<Column>(`/userstore/config/columns/${columnId}`);
   }
 
-  async listColumns(): Promise<Column[]> {
-    return this.makeRequest<Column[]>(`/userstore/config/columns`);
+  async listColumns(
+    startingAfter: string = paginationStart,
+    limit = defaultLimit
+  ): Promise<[Column[], boolean]> {
+    return this.makePaginatedRequest<Column>(
+      `/userstore/config/columns`,
+      {},
+      startingAfter,
+      limit
+    );
   }
 
   async updateColumn(column: Column): Promise<Column> {
@@ -184,7 +272,14 @@ class Client extends BaseClient {
   }
 
   async listMutators(): Promise<Mutator[]> {
-    return this.makeRequest<Mutator[]>(`/userstore/config/mutators`);
+    return this.makeRequest<Mutator[]>(`/userstore/config/mutators`).then(
+      (json) => {
+        if ('data' in json) {
+          return json.data as Mutator[];
+        }
+        return [];
+      }
+    );
   }
 
   async updateMutator(mutator: Mutator): Promise<Mutator> {
@@ -286,9 +381,15 @@ class Client extends BaseClient {
     );
   }
 
-  async listTransformers(): Promise<Transformer[]> {
-    return this.makeRequest<Transformer[]>(
-      `/tokenizer/policies/transformation`
+  async listTransformers(
+    startingAfter: string = paginationStart,
+    limit = defaultLimit
+  ): Promise<[Transformer[], boolean]> {
+    return this.makePaginatedRequest<Transformer>(
+      `/tokenizer/policies/transformation`,
+      {},
+      startingAfter,
+      limit
     );
   }
 
@@ -374,8 +475,8 @@ class Client extends BaseClient {
     accessor_id: string,
     context: object,
     selector_values: string[]
-  ): Promise<string> {
-    return this.makeRequest<string>(
+  ): Promise<{ data: string[] }> {
+    return this.makeRequest<{ data: string[] }>(
       `/userstore/api/accessors`,
       'POST',
       undefined,

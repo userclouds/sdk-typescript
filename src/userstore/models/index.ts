@@ -1,4 +1,5 @@
-import AccessPolicy from './access_policy';
+import AccessPolicy, { AccessPolicyComponent } from './access_policy';
+import AccessPolicyTemplate from './access_policy_template';
 import Accessor, { ColumnOutputConfig } from './accessor';
 import Column from './column';
 import Mutator, { ColumnInputConfig } from './mutator';
@@ -11,6 +12,7 @@ import ResourceID from './resource_id';
 
 export type {
   AccessPolicy,
+  AccessPolicyTemplate,
   Accessor,
   Column,
   ColumnInputConfig,
@@ -23,4 +25,4 @@ export type {
   Validator,
 };
 
-export { ResourceID };
+export { ResourceID, AccessPolicyComponent };

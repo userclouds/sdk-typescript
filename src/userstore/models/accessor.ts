@@ -14,7 +14,9 @@ type Accessor = {
   description: string;
   columns: ColumnOutputConfig[];
   access_policy: ResourceID;
+  token_access_policy: ResourceID;
   selector_config: UserSelectorConfig;
+  purposes: ResourceID[];
   version: number;
 };
 
