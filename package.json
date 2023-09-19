@@ -1,12 +1,13 @@
 {
   "name": "@userclouds/sdk-typescript",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "Typescript SDK for UserClouds",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "tsc",
+    "format": "yarn run prettier ."
   },
   "repository": {
     "type": "git",

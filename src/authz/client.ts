@@ -236,16 +236,15 @@ class Client extends BaseClient {
     targetObjectID: string,
     attributeName: string
   ): Promise<boolean> {
-    return this.makeRequest(
-      '/authz/checkAttribute',
+    return this.makeRequest<{ has_attribute: boolean }>(
+      '/authz/checkattribute',
       'GET',
-      undefined,
-      JSON.stringify({
+      {
         source_object_id: sourceObjectID,
         target_object_id: targetObjectID,
         attribute: attributeName,
-      })
-    );
+      }
+    ).then((response) => response.has_attribute);
   }
 }
 

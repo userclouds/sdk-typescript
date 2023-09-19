@@ -1,5 +1,6 @@
 import AuthZClient from './authz/client';
 import UserstoreClient from './userstore/client';
+import TokenizerClient from './tokenizer/client';
 import PlexClient from './plex/client';
 import {
   UCObject,
@@ -68,6 +69,7 @@ export {
   AccessPolicyComponent,
   AuthZClient,
   UserstoreClient,
+  TokenizerClient,
   PlexClient,
   getClientCredentialsToken,
   Region,
