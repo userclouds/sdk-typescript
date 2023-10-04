@@ -1,6 +1,6 @@
 {
   "name": "@userclouds/sdk-typescript",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Typescript SDK for UserClouds",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

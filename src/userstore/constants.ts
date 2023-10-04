@@ -17,3 +17,8 @@ export const TRANSFORM_TYPE_PASSTHROUGH = 'passthrough';
 export const TRANSFORM_TYPE_TOKENIZE_BY_REFERENCE = 'tokenizebyreference';
 export const TRANSFORM_TYPE_TOKENIZE_BY_VALUE = 'tokenizebyvalue';
 export const TRANSFORM_TYPE_TRANSFORM = 'transform';
+
+export const MUTATOR_COLUMN_DEFAULT_VALUE =
+  'UCDEF-7f55f479-3822-4976-a8a9-b789d5c6f152';
+export const MUTATOR_COLUMN_CURRENT_VALUE =
+  'UCCUR-7f55f479-3822-4976-a8a9-b789d5c6f152';
