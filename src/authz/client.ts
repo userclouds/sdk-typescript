@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { defaultLimit, paginationStart } from '../uc/pagination';
 import UCObject, { UCObjectType } from './models/ucobject';
 import Edge, { Attribute, EdgeType } from './models/edge';
@@ -33,19 +35,19 @@ class Client extends BaseClient {
     alias = '',
     organizationID = ''
   ): Promise<UCObject> {
-    const obj: { [key: string]: string } = {
+    const object: { [key: string]: string } = {
       id,
       type_id: typeId,
       alias,
     };
     if (organizationID) {
-      obj.organization_id = organizationID;
+      object.organization_id = organizationID;
     }
     return this.makeRequest(
       '/authz/objects',
       'POST',
       undefined,
-      JSON.stringify(obj)
+      JSON.stringify({ object })
     );
   }
 
@@ -89,15 +91,18 @@ class Client extends BaseClient {
     sourceObjectId: string,
     targetObjectId: string
   ): Promise<Edge> {
+    const edge: { [key: string]: string } = {
+      id,
+      edge_type_id: edgeTypeId,
+      source_object_id: sourceObjectId,
+      target_object_id: targetObjectId,
+    };
     return this.makeRequest(
       '/authz/edges',
       'POST',
       undefined,
       JSON.stringify({
-        id,
-        edge_type_id: edgeTypeId,
-        source_object_id: sourceObjectId,
-        target_object_id: targetObjectId,
+        edge,
       })
     );
   }
@@ -124,14 +129,15 @@ class Client extends BaseClient {
   }
 
   async createObjectType(id: string, typeName: string): Promise<UCObjectType> {
+    const object_type: { [key: string]: string } = {
+      id,
+      type_name: typeName,
+    };
     return this.makeRequest(
       '/authz/objecttypes',
       'POST',
       undefined,
-      JSON.stringify({
-        id,
-        type_name: typeName,
-      })
+      JSON.stringify({ object_type })
     );
   }
 
@@ -169,7 +175,7 @@ class Client extends BaseClient {
     attributes: Attribute[],
     organizationID = ''
   ): Promise<EdgeType> {
-    const params: { [key: string]: string | object } = {
+    const edge_type: { [key: string]: string | object } = {
       id,
       type_name: typeName,
       source_object_type_id: sourceObjectTypeId,
@@ -177,13 +183,13 @@ class Client extends BaseClient {
       attributes,
     };
     if (organizationID) {
-      params.organization_id = organizationID;
+      edge_type.organization_id = organizationID;
     }
     return this.makeRequest(
       '/authz/edgetypes',
       'POST',
       undefined,
-      JSON.stringify(params)
+      JSON.stringify({ edge_type })
     );
   }
 
@@ -207,15 +213,16 @@ class Client extends BaseClient {
     name: string,
     region = 'aws-us-west-2'
   ): Promise<Organization> {
+    const organization: { [key: string]: string } = {
+      id,
+      name,
+      region,
+    };
     return this.makeRequest(
       '/authz/organizations',
       'POST',
       undefined,
-      JSON.stringify({
-        id,
-        name,
-        region,
-      })
+      JSON.stringify({ organization })
     );
   }
 
