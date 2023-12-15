@@ -24,7 +24,6 @@ import {
   Transformer,
   User,
   UserSelectorConfig,
-  Validator,
   ResourceID,
 } from './userstore/models';
 import {
@@ -114,5 +113,4 @@ export type {
   Transformer,
   User,
   UserSelectorConfig,
-  Validator,
 };

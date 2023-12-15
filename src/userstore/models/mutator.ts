@@ -6,7 +6,6 @@ import ResourceID from './resource_id';
 type ColumnInputConfig = {
   column: ResourceID;
   normalizer: ResourceID;
-  validator: ResourceID;
 };
 
 type Mutator = {
