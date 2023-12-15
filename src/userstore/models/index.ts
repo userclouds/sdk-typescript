@@ -8,7 +8,6 @@ import Purpose from './purpose';
 import Transformer from './transformer';
 import User from './user';
 import UserSelectorConfig from './user_selector';
-import Validator from './validator';
 import ResourceID from './resource_id';
 
 export type {
@@ -24,7 +23,6 @@ export type {
   Transformer,
   User,
   UserSelectorConfig,
-  Validator,
 };
 
 export { ResourceID, AccessPolicyComponent };
