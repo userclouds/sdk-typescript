@@ -27,11 +27,19 @@ class APIErrorResponse {
 
   id: string;
 
+  secondary_id: string;
+
   identical: boolean;
 
-  constructor(error: string, id: string, identical: boolean) {
+  constructor(
+    error: string,
+    id: string,
+    secondary_id: string,
+    identical: boolean
+  ) {
     this.error = error;
     this.id = id;
+    this.secondary_id = secondary_id;
     this.identical = identical;
   }
 
@@ -42,7 +50,12 @@ class APIErrorResponse {
       obj = nestedError;
       nestedError = obj.error;
     }
-    return new APIErrorResponse(obj.error, obj.id, obj.identical);
+    return new APIErrorResponse(
+      obj.error,
+      obj.id,
+      obj.secondary_id,
+      obj.identical
+    );
   }
 }
 
