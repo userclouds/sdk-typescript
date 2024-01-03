@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 /* eslint max-classes-per-file: ["error", 5] */
 
+import { version } from '../../package.json';
+
 class APIError extends Error {
   code: number;
 
@@ -79,7 +81,11 @@ class BaseClient {
       fetch(this.makeURL(url, params), {
         method,
         body,
-        headers: { Authorization: `Bearer ${this.authHeader}` },
+        headers: {
+          Authorization: `Bearer ${this.authHeader}`,
+          'X-Usercloudssdk-Version': version,
+          'User-Agent': `UserClouds TypeScript SDK v${version}`,
+        },
       })
         .then(async (response) => {
           if (!response.ok) {
