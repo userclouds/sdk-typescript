@@ -412,9 +412,20 @@ class Client extends BaseClient {
   // User functions
   async createUser(
     profile: object = {},
-    organization_id = ''
+    id: string | null = null,
+    organization_id: string | null = null,
+    region: string | null = null
   ): Promise<string> {
-    const body = organization_id ? { profile, organization_id } : { profile };
+    const body: { [key: string]: string | object } = { profile };
+    if (id) {
+      body.id = id;
+    }
+    if (organization_id) {
+      body.organization_id = organization_id;
+    }
+    if (region) {
+      body.region = region;
+    }
     return this.makeRequest<string>(
       `/authn/users`,
       'POST',
@@ -425,13 +436,64 @@ class Client extends BaseClient {
 
   async createUserWithPassword(
     username: string,
-    password: string
+    password: string,
+    profile: object = {},
+    id: string | null = null,
+    organization_id: string | null = null,
+    region: string | null = null
   ): Promise<string> {
+    const body: { [key: string]: string | object } = {
+      username,
+      password,
+      authn_type: 'password',
+    };
+    if (profile) {
+      body.profile = profile;
+    }
+    if (id) {
+      body.id = id;
+    }
+    if (organization_id) {
+      body.organization_id = organization_id;
+    }
+    if (region) {
+      body.region = region;
+    }
     return this.makeRequest<string>(
       `/authn/users`,
       'POST',
       undefined,
-      JSON.stringify({ username, password, authn_type: 'password' })
+      JSON.stringify(body)
+    );
+  }
+
+  async createUserWithMutator(
+    mutator_id: string,
+    context: object,
+    row_data: object,
+    id: string | null = null,
+    organization_id: string | null = null,
+    region: string | null = null
+  ): Promise<string> {
+    const body: { [key: string]: string | object } = {
+      mutator_id,
+      context,
+      row_data,
+    };
+    if (id) {
+      body.id = id;
+    }
+    if (organization_id) {
+      body.organization_id = organization_id;
+    }
+    if (region) {
+      body.region = region;
+    }
+    return this.makeRequest<string>(
+      `/userstore/api/mutators`,
+      'POST',
+      undefined,
+      JSON.stringify(body)
     );
   }
 
