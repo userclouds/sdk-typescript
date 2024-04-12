@@ -1,9 +1,9 @@
 {
   "name": "@userclouds/sdk-typescript",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Typescript SDK for UserClouds",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
