@@ -211,7 +211,7 @@ class Client extends BaseClient {
   async createOrganization(
     id: string,
     name: string,
-    region = 'aws-us-west-2'
+    region = ''
   ): Promise<Organization> {
     const organization: { [key: string]: string } = {
       id,

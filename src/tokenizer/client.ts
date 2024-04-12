@@ -3,6 +3,7 @@ import {
   AccessPolicyTemplate,
   Transformer,
 } from '../userstore/models';
+import InspectTokenResponse from './models';
 import ResourceID from '../userstore/models/resource_id';
 import { defaultLimit, paginationStart } from '../uc/pagination';
 import BaseClient, { APIError, APIErrorResponse } from '../uc/baseclient';
@@ -264,6 +265,17 @@ class Client extends BaseClient {
       'DELETE',
       undefined,
       undefined
+    );
+  }
+
+  async inspectToken(token: string): Promise<InspectTokenResponse> {
+    return this.makeRequest<InspectTokenResponse>(
+      '/tokenizer/tokens/actions/inspect',
+      'POST',
+      undefined,
+      JSON.stringify({
+        token,
+      })
     );
   }
 }
