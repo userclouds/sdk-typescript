@@ -59,6 +59,7 @@ type AccessPolicy = {
   policy_type: string;
   version: number;
   components: Array<AccessPolicyComponent>;
+  required_context: Record<string, string>;
 };
 
 export default AccessPolicy;
