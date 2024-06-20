@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 type Column = {
   id: string;
+  table: string;
   name: string;
   type: string;
   is_array: boolean;
