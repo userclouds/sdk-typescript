@@ -1,6 +1,7 @@
 import { config as dotenvConfig } from 'dotenv';
 import { v4 as uuidv4, NIL as NIL_UUID } from 'uuid';
 
+/* eslint-disable import/no-unresolved */
 import {
   AuthZClient,
   getClientCredentialsToken,
@@ -9,6 +10,7 @@ import {
   EdgeType,
   Edge,
 } from '@userclouds/sdk-typescript';
+/* eslint-enable import/no-unresolved */
 
 const docUserObjectType: UCObjectType = {
   id: '755410e3-97da-4acc-8173-4a10cab2c861',
@@ -138,8 +140,8 @@ const setupAuthZ = async (client: AuthZClient) => {
 };
 
 const testAuthZ = async (client: AuthZClient) => {
-  var objects: UCObject[] = [];
-  var edges: Edge[] = [];
+  const objects: UCObject[] = [];
+  const edges: Edge[] = [];
 
   try {
     const user = await client.createObject(
