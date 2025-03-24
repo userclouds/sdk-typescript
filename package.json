@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "eslint --max-warnings=0 src/ samples/",
     "lintfix": "eslint --max-warnings=0 --fix --quiet src/ samples/",
-    "format": "npx prettier . --write"
+    "format": "yarn run prettier . --write"
   },
   "repository": {
     "type": "git",
