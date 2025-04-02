@@ -227,7 +227,7 @@ const testAuthZ = async (client: AuthZClient) => {
       throw new Error('user cannot view doc2 but should be able to');
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     throw e;
   } finally {
     await Promise.all(
@@ -289,6 +289,6 @@ main(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET
 ).catch((e) => {
-  console.log(e);
+  console.error(e);
   process.exit(1);
 });

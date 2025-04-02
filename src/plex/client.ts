@@ -1,7 +1,5 @@
 import BaseClient from '../uc/baseclient';
 
-/* eslint-disable camelcase */
-
 class Client extends BaseClient {
   async inviteUser(
     invitee_email: string,

@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import JSONValue from './json';
 
 const paginationStart = '';

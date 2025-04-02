@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint max-classes-per-file: ["error", 5] */
 
 import { version } from '../../package.json';

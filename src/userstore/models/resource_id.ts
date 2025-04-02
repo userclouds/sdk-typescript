@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 class ResourceID {
   id: string;
 
