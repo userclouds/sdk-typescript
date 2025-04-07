@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import { defaultLimit, paginationStart } from '../uc/pagination';
 import UCObject, { UCObjectType } from './models/ucobject';
 import Edge, { Attribute, EdgeType } from './models/edge';

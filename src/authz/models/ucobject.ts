@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 // TODO: UC prefix
 type UCObject = {
   id: string;

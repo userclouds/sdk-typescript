@@ -8,8 +8,6 @@ import ResourceID from '../userstore/models/resource_id';
 import { defaultLimit, paginationStart } from '../uc/pagination';
 import BaseClient, { APIError, APIErrorResponse } from '../uc/baseclient';
 
-/* eslint-disable camelcase */
-
 class Client extends BaseClient {
   // Access Policy functions
   async createAccessPolicy(

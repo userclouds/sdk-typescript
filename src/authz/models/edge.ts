@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 type Edge = {
   id: string;
   edge_type_id: string;

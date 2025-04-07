@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 type Column = {
   id: string;
   table: string;

@@ -1,8 +1,6 @@
 import UserSelectorConfig from './user_selector';
 import ResourceID from './resource_id';
 
-/* eslint-disable camelcase */
-
 type ColumnOutputConfig = {
   column: ResourceID;
   transformer: ResourceID;
